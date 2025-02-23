@@ -1,11 +1,14 @@
 package com.ignore.app;
 
-import com.ignore.ScreenFrameBuffer;
+import com.ignore.FrameBuffer;
+import com.ignore.Mesh;
 import com.ignore.Shader;
+import com.ignore.Texture;
 import org.lwjgl.opengl.GL;
 
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL33.*;
+import static org.lwjgl.opengl.GL33.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL33.glClear;
 
 public class Main {
 	public void run() {
@@ -16,7 +19,7 @@ public class Main {
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-		long window = glfwCreateWindow(800, 600, "Test Application", 0L, 0L);
+		long window = glfwCreateWindow(800, 600, "PleaseIgnore", 0L, 0L);
 		if (window == 0)
 			throw new RuntimeException("Failed to create glfw window!");
 
@@ -31,41 +34,34 @@ public class Main {
 		int[] indices = {
 				0, 1, 2,
 		};
-		int vao = glGenVertexArrays();
-		glBindVertexArray(vao);
-		int vbo = glGenBuffers();
-		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-		glBufferData(GL_ARRAY_BUFFER, vertices, GL_STATIC_DRAW);
-		int ebo = glGenBuffers();
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices, GL_STATIC_DRAW);
-		glVertexAttribPointer(0, 2, GL_FLOAT, false, Float.BYTES * 4, 0L);
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(1, 2, GL_FLOAT, false, Float.BYTES * 4, Float.BYTES * 2L);
-		glEnableVertexAttribArray(1);
+		Mesh mesh = new Mesh(vertices, indices, 2, 2);
 		Shader frameBufferShader = new Shader("res/shaders/screen_space.vert", "res/shaders/screen_space_pixelation.frag");
 		Shader shader = new Shader("res/shaders/vertex.glsl", "res/shaders/fragment.glsl");
-		ScreenFrameBuffer frameBuffer = new ScreenFrameBuffer(800, 600);
+		FrameBuffer frameBuffer = new FrameBuffer(800, 600);
+		Texture texture = new Texture("res/images/wall.jpg", false);
 		while (!glfwWindowShouldClose(window)) {
 			// start frameBuffer
 			frameBuffer.bind();
 			glClear(GL_COLOR_BUFFER_BIT);
 			shader.bind();
-			glBindVertexArray(vao);
-			glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0L);
-			glBindVertexArray(0);
+			shader.setInt("uTexture", 0);
+			texture.bind(0);
+			mesh.draw();
+			texture.unbind();
 			shader.unbind();
 			// end frameBuffer
 			frameBuffer.unbind();
 			// draw frameBuffer texture
 			glClear(GL_COLOR_BUFFER_BIT);
 			frameBufferShader.bind();
-			frameBufferShader.setFloat("uPixels", 128f);
+			frameBufferShader.setFloat("uPixels", 512f);
 			frameBuffer.draw(frameBufferShader);
 			frameBufferShader.unbind();
 			glfwSwapBuffers(window);
 			glfwPollEvents();
 		}
+		texture.destroy();
+		mesh.destroy();
 		frameBuffer.destroy();
 		shader.destroy();
 		glfwDestroyWindow(window);

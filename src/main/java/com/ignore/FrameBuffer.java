@@ -4,42 +4,29 @@ import java.math.BigInteger;
 
 import static org.lwjgl.opengl.GL33.*;
 
-public class ScreenFrameBuffer {
+public class FrameBuffer {
 
-	private static final float[] vertices = {
-		-1f, 1f, 0f, 1f,
-		-1f,-1f, 0f, 0f,
-		 1f,-1f, 1f, 0f,
-		 1f, 1f, 1f, 1f,
-	};
-
-	private static final int[] indices = {
-			0, 1, 2,
-			2, 3, 0,
-	};
-
-	private static final int vao;
+	private static final Mesh screenMesh;
 
 	static {
-		vao = glGenVertexArrays();
-		glBindVertexArray(vao);
-		int vbo = glGenBuffers();
-		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-		glBufferData(GL_ARRAY_BUFFER, vertices, GL_STATIC_DRAW);
-		int ebo = glGenBuffers();
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices, GL_STATIC_DRAW);
-		glVertexAttribPointer(0, 2, GL_FLOAT, false, Float.BYTES * 4, 0L);
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(1, 2, GL_FLOAT, false, Float.BYTES * 4, Float.BYTES * 2L);
-		glEnableVertexAttribArray(1);
+		float[] vertices = {
+				-1f, 1f, 0f, 1f,
+				-1f,-1f, 0f, 0f,
+				1f,-1f, 1f, 0f,
+				1f, 1f, 1f, 1f,
+		};
+		int[] indices = {
+				0, 1, 2,
+				2, 3, 0,
+		};
+		screenMesh = new Mesh(vertices, indices, 2, 2);
 	}
 
 	private final int width, height, gcd;
 
 	private int fbo, texture, rbo;
 
-	public ScreenFrameBuffer(int w, int h) {
+	public FrameBuffer(int w, int h) {
 		width = w;
 		height = h;
 		gcd = BigInteger.valueOf(width).gcd(BigInteger.valueOf(height)).intValue();
@@ -85,9 +72,10 @@ public class ScreenFrameBuffer {
 		glBindTexture(GL_TEXTURE_2D, texture);
 		shader.setInt("uTexture0", 0);
 		shader.setFloat2("uAspectRatio", (float) width / gcd, (float) height / gcd);
-		glBindVertexArray(vao);
-		glDrawElements(GL_TRIANGLES, indices.length, GL_UNSIGNED_INT, 0L);
-		glBindVertexArray(0);
+		screenMesh.draw();
+//		glBindVertexArray(vao);
+//		glDrawElements(GL_TRIANGLES, indices.length, GL_UNSIGNED_INT, 0L);
+//		glBindVertexArray(0);
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 }
