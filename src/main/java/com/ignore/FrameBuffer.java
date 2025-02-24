@@ -73,9 +73,6 @@ public class FrameBuffer {
 		shader.setInt("uTexture0", 0);
 		shader.setFloat2("uAspectRatio", (float) width / gcd, (float) height / gcd);
 		screenMesh.draw();
-//		glBindVertexArray(vao);
-//		glDrawElements(GL_TRIANGLES, indices.length, GL_UNSIGNED_INT, 0L);
-//		glBindVertexArray(0);
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 }
