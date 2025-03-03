@@ -2,6 +2,8 @@ package com.crossly.components;
 
 import com.crossly.components.subcomponents.Shader;
 import org.joml.Matrix4f;
+import org.joml.Vector2f;
+import org.joml.Vector3f;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -53,9 +55,17 @@ public class ShaderProgram {
 		glUniform2f(getUniformLocation(name), x, y);
 	}
 
+	public void setFloat2(String name, Vector2f v2f) {
+		setFloat2(name, v2f.x, v2f.y);
+	}
+
 	public void setFloat3(String name, float x, float y, float z) {
 		bind();
 		glUniform3f(getUniformLocation(name), x, y, z);
+	}
+
+	public void setFloat3(String name, Vector3f v3f) {
+		setFloat3(name, v3f.x, v3f.y, v3f.z);
 	}
 
 	public void setMat4(String name, Matrix4f mat4) {
