@@ -97,8 +97,11 @@ public class PleaseIgnore extends Application {
 
 	public void onExit() {
 		triangle.delete();
+		screenSpaceMesh.delete();
 		triangleShader.delete();
+		screenSpaceShader.delete();
 		triangleTexture.delete();
+		frameBuffer.delete();
 	}
 
 	public static void main(String[] args) {
