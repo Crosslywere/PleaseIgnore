@@ -1,5 +1,6 @@
 package com.crossly.components;
 
+import com.crossly.components.subcomponents.Mesh;
 import com.crossly.components.subcomponents.RenderBuffer;
 import com.crossly.components.subcomponents.SubTexture;
 
@@ -33,6 +34,7 @@ public class FrameBuffer {
 	public void delete() {
 		glDeleteFramebuffers(frameBufferId);
 		renderTarget.delete();
+		renderBuffer.delete();
 	}
 
 	public void draw(ShaderProgram shader, Mesh mesh) {
