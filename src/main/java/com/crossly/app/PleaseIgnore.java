@@ -50,6 +50,7 @@ public class PleaseIgnore extends Application {
 		frameBuffer = new FrameBuffer(getWidth(), getHeight());
 		camera = new Camera(new Vector3f(0f, 0f, -1.3f));
 		onResize();
+		System.out.println("Controls\n========\n1 - Large pixels\n2 - Medium pixels\n3 - Small pixels\n'Space' - Pause/Play rotation");
 	}
 
 	@Override
@@ -72,17 +73,9 @@ public class PleaseIgnore extends Application {
 		if (inputs.getKeyInput().isKeyJustPressed('1'))
 			pixelDensity = 512;
 		if (inputs.getKeyInput().isKeyJustPressed('2'))
-			pixelDensity = 1024;
+			pixelDensity = 512 + 256;
 		if (inputs.getKeyInput().isKeyJustPressed('3'))
 			pixelDensity = 2048;
-
-		int scrollAmt = inputs.getMouseInput().getScroll();
-		if (scrollAmt > 0)
-			camera.setFov(camera.getFov() + (scrollAmt * .5f));
-		if (scrollAmt < 0)
-			camera.setFov(camera.getFov() - (scrollAmt * .5f));
-
-		camera.setFov(Math.clamp(camera.getFov(), 45f, 60f));
 	}
 
 	@Override
