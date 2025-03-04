@@ -6,3 +6,6 @@ I don't think in all my works that I've even come close to making anything worth
 
 So this will probably be my last real attempt at making anything I want.
 After this I guess I'm done trying anything for myself.
+
+## 4/3/2025 ~10PM
+![Sample_1](README/PleaseIgnore1.png)
