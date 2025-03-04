@@ -4,23 +4,32 @@ import com.crossly.components.subcomponents.Transform;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
-public class Camera extends Transform {
+public class Camera {
 
+	private Transform transform;
 	private float fov;
 
 	public Camera() {
-		super();
+		transform = new Transform();
 		fov = 45f;
 	}
 
 	public Camera(Vector3f position) {
 		this();
-		super.setPosition(position);
+		transform.setPosition(position);
 	}
 
 	public Matrix4f getProjectionViewMatrix(float aspect) {
 		return new Matrix4f().perspective(fov, aspect, 0.3f, 100f)
-				.mul(getModelMatrix());
+				.mul(transform.getModelMatrix());
+	}
+
+	public Transform getTransform() {
+		return transform;
+	}
+
+	public void setTransform(Transform transform) {
+		this.transform = transform;
 	}
 
 	public float getFov() {
