@@ -1,8 +1,10 @@
 package com.crossly.util;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Scanner;
 
 public class FileUtil {
 	public static String getRealFilepath(String filepath) {
@@ -24,6 +26,29 @@ public class FileUtil {
 			}
 		} catch (IOException e) {
 			e.printStackTrace(System.err);
+		}
+		return builder.toString();
+	}
+
+	public static String getShaderFileSourceFlat(String filepath) {
+		String source = getFileSource(filepath);
+		Scanner scanner = new Scanner(source);
+		StringBuilder builder = new StringBuilder();
+		while (scanner.hasNextLine()) {
+			String line = scanner.nextLine();
+			if (line.trim().startsWith("#include")) {
+				line = line.trim().substring(9).trim();
+				line = line.replace('"', ' ').trim();
+				String includePath = "./";
+				if (filepath.contains("/") || filepath.contains("\\")) {
+					int index = filepath.lastIndexOf('/') >= 0 ? filepath.lastIndexOf('/') : filepath.lastIndexOf('\\');
+					includePath = filepath.substring(0, index) + File.separator;
+				}
+				includePath += line;
+				builder.append(getShaderFileSourceFlat(includePath));
+			} else {
+				builder.append(line).append('\n');
+			}
 		}
 		return builder.toString();
 	}

@@ -14,7 +14,7 @@ public class Shader {
 
 	public Shader(String filepath, int type) {
 		shaderId = glCreateShader(type);
-		glShaderSource(shaderId, FileUtil.getFileSource(filepath));
+		glShaderSource(shaderId, FileUtil.getShaderFileSourceFlat(filepath));
 		glCompileShader(shaderId);
 		validateShader();
 	}
