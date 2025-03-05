@@ -1,5 +1,6 @@
 package com.crossly.components;
 
+import com.crossly.components.subcomponents.HasTransform;
 import com.crossly.components.subcomponents.Mesh;
 import com.crossly.components.subcomponents.Transform;
 import com.crossly.util.FileUtil;
@@ -7,7 +8,7 @@ import org.lwjgl.assimp.*;
 
 import java.util.ArrayList;
 
-public class Model {
+public class Model implements HasTransform {
 
 	private final Transform transform;
 	private final ArrayList<Mesh> meshes = new ArrayList<>();

@@ -50,7 +50,7 @@ public class Transform {
 		this.scale = scale;
 	}
 
-	public void setParent(Transform parent) {
-		this.parent = parent;
+	public void setParent(HasTransform parent) {
+		this.parent = parent.getTransform();
 	}
 }

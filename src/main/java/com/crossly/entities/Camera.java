@@ -1,10 +1,11 @@
-package com.crossly.components;
+package com.crossly.entities;
 
+import com.crossly.components.subcomponents.HasTransform;
 import com.crossly.components.subcomponents.Transform;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
-public class Camera {
+public class Camera implements HasTransform {
 
 	private Transform transform;
 	private float fov;
@@ -20,7 +21,7 @@ public class Camera {
 	}
 
 	public Matrix4f getProjectionViewMatrix(float aspect) {
-		return new Matrix4f().perspective(fov, aspect, 0.3f, 100f)
+		return new Matrix4f().perspective((float) Math.toRadians(fov), aspect, 0.3f, 100f)
 				.mul(transform.getModelMatrix());
 	}
 

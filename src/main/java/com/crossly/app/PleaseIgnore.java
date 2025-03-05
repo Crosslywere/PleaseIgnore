@@ -1,7 +1,11 @@
 package com.crossly.app;
 
-import com.crossly.components.*;
+import com.crossly.components.FrameBuffer;
+import com.crossly.components.Model;
+import com.crossly.components.ShaderProgram;
+import com.crossly.components.Texture;
 import com.crossly.components.subcomponents.Mesh;
+import com.crossly.entities.Camera;
 import com.crossly.ui.InputSystem;
 import com.crossly.ui.Timer;
 import org.joml.Vector2f;
@@ -46,10 +50,17 @@ public class PleaseIgnore extends Application {
 		objectShader = new ShaderProgram("res/shaders/model.vert", "res/shaders/model.frag");
 		screenSpaceShader = new ShaderProgram("res/shaders/screen_space.vert", "res/shaders/screen_space_pixelation.frag");
 		frameBuffer = new FrameBuffer(getWidth(), getHeight());
-		camera = new Camera(new Vector3f(0f, 0f, -1.3f));
+		camera = new Camera(new Vector3f(0f, 0f, -.7f));
 		modelTexture = new Texture("res/images/Scene_-_Root_baseColor.jpeg", true);
 		onResize();
-		System.out.println("Controls\n========\n1 - Large pixels\n2 - Medium pixels\n3 - Small pixels\n'Space' - Pause/Play rotation");
+		System.out.println("""
+				Controls
+				========
+				1 - Large pixels (Default)
+				2 - Medium pixels
+				3 - Small pixels
+				(Space) - Pause/Play rotation
+				You might have to maximize the window to see the pixelation effect clearly""");
 	}
 
 	@Override
@@ -72,9 +83,12 @@ public class PleaseIgnore extends Application {
 		if (inputs.getKeyInput().isKeyJustPressed('1'))
 			pixelDensity = 512;
 		if (inputs.getKeyInput().isKeyJustPressed('2'))
-			pixelDensity = 512 + 256;
+			pixelDensity = 768;
 		if (inputs.getKeyInput().isKeyJustPressed('3'))
-			pixelDensity = 2048;
+			pixelDensity = 4096;
+
+		camera.setFov(camera.getFov() - inputs.getMouseInput().getScroll());
+		camera.setFov(Math.clamp(camera.getFov(), 1f, 90f));
 	}
 
 	@Override
@@ -85,7 +99,7 @@ public class PleaseIgnore extends Application {
 			FrameBuffer.clear();
 			objectShader.bind();
 			objectShader.setMat4("uProjView", camera.getProjectionViewMatrix(aspectRatio.x / aspectRatio.y));
-			objectShader.setFloat("uLevels", 3f);
+			objectShader.setFloat("uLevels", 5f);
 			objectShader.setFloat3("uViewPos", camera.getTransform().getPosition());
 			objectShader.setFloat3("uLightPos", new Vector3f(1f, 13f, 7f));
 			modelTexture.bind(0);

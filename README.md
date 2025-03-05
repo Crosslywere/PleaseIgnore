@@ -9,3 +9,8 @@ After this I guess I'm done trying anything for myself.
 
 ## 4/3/2025 ~10PM
 ![Sample_1](README/PleaseIgnore1.png)
+
+# 5/3/2025 ~5:20PM
+Maybe I overestimated myself in my C/C++ skills.
+I'm having a much better time programming in Java.
+Maybe I continue with Java from now on? 🤷🏾

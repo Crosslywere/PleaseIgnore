@@ -31,8 +31,7 @@ public class FileUtil {
 	}
 
 	public static String getShaderFileSourceFlat(String filepath) {
-		String source = getFileSource(filepath);
-		Scanner scanner = new Scanner(source);
+		Scanner scanner = new Scanner(getFileSource(filepath));
 		StringBuilder builder = new StringBuilder();
 		while (scanner.hasNextLine()) {
 			String line = scanner.nextLine();
